@@ -33,7 +33,19 @@ public class StudentController {
     public Optional<Student> getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
+    // UPDATE
+    @PutMapping("/{id}")
+    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
 
+        Student existingStudent = studentService.getStudentById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        existingStudent.setName(student.getName());
+        existingStudent.setEmail(student.getEmail());
+        existingStudent.setCourse(student.getCourse());
+
+        return studentService.saveStudent(existingStudent);
+    }
     // DELETE
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable Long id) {
